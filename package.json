@@ -1,0 +1,10 @@
+{
+  "name": "az-fun-alert",
+  "version": "1.0.0",
+  "description": "Simple HTTP Trigger Azure Function App",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
