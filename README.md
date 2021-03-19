@@ -325,3 +325,9 @@ PS :\> func azure functionapp logstream funalert-func
 This Blog is based on another one written by John Friesen:
 
 https://dev.to/superjohn140/azure-alerts-secure-webhook-azure-functions-with-authentication-364
+
+## Usefull links
+
+Automation with powershell:
+
+https://docs.microsoft.com/en-us/azure/azure-monitor/alerts/action-groups#secure-webhook-powershell-script
