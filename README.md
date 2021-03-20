@@ -211,7 +211,7 @@ IMPORTANT
 
 ### Test on my local Machine
 
-We expect to an 200 OK:
+We expect to receive an HTTP Response Code 200 OK:
 
 ~~~~bash
 $ curl "http://localhost:7071/api/HttpTrigger?name=christian" -v
