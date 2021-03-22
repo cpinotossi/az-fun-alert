@@ -50,7 +50,7 @@ Back on the initial "Authentication / Authorizaton" Screen confirm your settings
 
 ### "AAD App" & AAD
 
-Next we need to setup the "App Role" inside the new "AAD App".Therefore we need to find our our "AAD App":
+Next we need to setup the "App Role" inside the new "AAD App". Therefore we need to find our "AAD App":
 
 - Go into the Azure Active Directy View and select "App registration".
 - Here you will find your "AAD App", in our case it has been named "funalert-func-app". Click on it to call the detail view of our "AAD App" funalert-func-app:
@@ -63,7 +63,7 @@ Inside the Detail view of our "AAD App" we will also be able to see the "Object 
 
 ### Support App Role based access
 
-Inside "AAD App" "funalert-func-app" we can use the concept of an "App Role". "App Role" is something we can assign other "AAD Identities" like User, Group, Service Principal, Managed Identity, Enterprise Applications.
+Inside "AAD App" "funalert-func-app" we can use the concept of an "App Role". "App Role" is something we can assign other "AAD Identities" like User, Group, Service Principal, Managed Identity, Enterprise Applications. In our case we like to assign this to our Azure Container Instance. But first we need to define the "App Role" inside our "AAD App":
 
 - Select the "App Role" from the left hand menue bar inside the "ADD App" view of "funalert-func-app".
 - Select "Create app role"
@@ -79,6 +79,8 @@ Inside "AAD App" "funalert-func-app" we can use the concept of an "App Role". "A
 
 ![Overview](/images/afa.auth.08.png "Overview")
 
+We will need the "Id" or our new created "App Role":
+
 - Select "Manifest" from the left hand menue bar.
 - Find the "id" of our new "App Role" (Id ="ce2") inside the JSON file.
 
@@ -86,7 +88,8 @@ Inside "AAD App" "funalert-func-app" we can use the concept of an "App Role". "A
 
 ### AAD Enterprise Application
 
-During the creation of the "AAD App" "funalert-func-app" we also create another Object inside the AAD called "Enterprise Application" with a seperate "Object Id".
+"AAD App" (aka App Registration) does not represent an Service Principal inside an AAD. But to be able to define Access rights we will need to represent our Azure Function App as an Service Principal inside our AAD.
+Therefore, during the creation of the "AAD App" "funalert-func-app", AAD created an "Service Principal" of the type "Enterprise Application" with a seperate "Object Id" in parallel. In the next step we need to retrieve the corresponding Object Id of the "Enterprise Application" Service Principal:
 
 - Select "Enterprise Application" from the AAD Menue:
 
@@ -103,7 +106,6 @@ IMPORTANT
 ![Overview](/images/afa.auth.11.png "Overview")
 
 Status of our setup:
-- "AAD App" "funalert-func-app" (Object Id "f38"), 
 - "App Role" "funalert-func-sp-approle" (Id "ce2"),
 - "Enterprise Application" "funalert-func-app" (Object Id "51c")
 
@@ -112,7 +114,7 @@ Status of our setup:
 
 ## Azure Container Instance Managed Identity
 
-The Azure Container Instances [ACi] "funalert-aci" needs also to become visible to our AAD via an "Managed Identity".
+The Azure Container Instances [ACI] "funalert-aci" needs also to become visible to our AAD via an "Managed Identity".
 
 - Select "Identity" from inside the ACI "funalert-aci" view.
 - Select "On" from Status.
