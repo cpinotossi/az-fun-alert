@@ -50,13 +50,7 @@ Back on the initial "Authentication / Authorizaton" Screen confirm your settings
 
 ### "AAD App" & AAD
 
-We created an "AAD App" with the name "funalert-func-app". This is a special Type of "Service Principal" which lives inside our AAD Tenant. And therefore AAD will be able to become the "Identity Service Provider" for our "AAD App" called "funalert-func" and finally for our Azure Function called "funalert-func".
-
-That´s how our current setup looks like for AAD:
-
-![Overview](/images/afa.auth.04.png "Overview")
-
-To find the Object Id of our "AAD App" "funalert-func-app" we need to look inside our AAD.
+Next we need to setup the "App Role" inside the new "AAD App".Therefore we need to find our our "AAD App":
 
 - Go into the Azure Active Directy View and select "App registration".
 - Here you will find your "AAD App", in our case it has been named "funalert-func-app". Click on it to call the detail view of our "AAD App" funalert-func-app:
@@ -126,10 +120,9 @@ The Azure Container Instances [ACi] "funalert-aci" needs also to become visible 
 
 ![Overview](/images/aci.auth.01.png "Overview")
 
-By now we have setup four new Objects inside AAD:
+Out of all the objects we generated so far this are the once which will become relevant for the next step:
 
 - Azure Container "Managed Id" (Object Id = "4f9..")
-- Azure Function "AAD App" (Object Id = "f38..")
 - AAD App "App Role" (Id = "ce2..")
 - AAD Enterprise Application (Object Id = "51c")
 
