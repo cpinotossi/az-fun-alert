@@ -277,7 +277,7 @@ $ curl "https://funalert-func.azurewebsites.net/api/httptrigger" -v
 < HTTP/1.1 401 Unauthorized
 < Content-Length: 58
 < Content-Type: text/html
-< WWW-Authenticate: Bearer realm="funalert-func.azurewebsites.net" authorization_uri="https://login.windows.net/0ba83d3d-0644-4916-98c0-d513e10dc917/oauth2/authorize" resource_id="bab9d3b0-16ae-450b-aa4a-f2fdba022a56"
+< WWW-Authenticate: Bearer realm="funalert-func.azurewebsites.net" authorization_uri="https://login.windows.net/my-sts/oauth2/authorize" resource_id="bab9d3b0-16ae-450b-aa4a-f2fdba022a56"
 < Date: Fri, 19 Mar 2021 14:49:35 GMT
 <
 ~~~~
@@ -305,14 +305,71 @@ You can also make use of the Azure CLI to get the logs:
 az monitor app-insights query --apps funalert-func -g funalert-rg --analytics-query 'traces | where timestamp > ago(10m) and message has \"huhu\"'
 ~~~~
 
-## Watch Out
+### Get Logs via the Azure Function CLI
 
-#### Get Logs via the Azure Function CLI
+Before you can retrive logs you will need to make sure that the logging is setup with ""fileLoggingMode": "always" inside the host.json.
 
-I have not been able to retrieve the corresponding logs via the Azure Function CLI. Therefore I did end up using ApplicationInsights.
+NOTE: This should be done before you restart the ACI.
+
+~~~~json
+{
+  "version": "2.0",
+  "logging": {
+    "fileLoggingMode": "always",
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[1.*, 2.0.0)"
+  }
+}
+
+~~~~
+
+Afterwards you can start to connect to the logstream as follow:
 
 ~~~~pwsh
 PS :\> func azure functionapp logstream funalert-func
+~~~~
+
+Output should look as follow:
+
+~~~~pwsh
+PS :\> func azure functionapp logstream funalert-func
+2021-03-26T12:07:01.491 [Information] "caller": "ga@myedge.org",
+2021-03-26T12:07:01.492 [Information] "correlationId": "c9547a1c-846d-4cd9-b5bc-4009dfe9c4f1",
+2021-03-26T12:07:01.492 [Information] "description": "",
+2021-03-26T12:07:01.492 [Information] "eventSource": "Administrative",
+2021-03-26T12:07:01.492 [Information] "eventTimestamp": "2021-03-26T12:05:22.0029288+00:00",
+2021-03-26T12:07:01.492 [Information] "httpRequest": "{\"clientRequestId\":\"88996428-8e2b-11eb-bca6-9de033d37913\",\"clientIpAddress\":\"93.230.221.88\",\"method\":\"POST\"}",
+2021-03-26T12:07:01.492 [Information] "eventDataId": "58281b51-cc22-4f16-b93d-3b6a3b4863c7",
+2021-03-26T12:07:01.492 [Information] "level": "Informational",
+2021-03-26T12:07:01.492 [Information] "operationName": "Microsoft.ContainerInstance/containerGroups/restart/action",
+2021-03-26T12:07:01.492 [Information] "operationId": "c9547a1c-846d-4cd9-b5bc-4009dfe9c4f1",
+2021-03-26T12:07:01.492 [Information] "properties": {
+2021-03-26T12:07:01.492 [Information] "eventCategory": "Administrative",
+2021-03-26T12:07:01.492 [Information] "entity": "/subscriptions/my-subscription/resourceGroups/funalert-rg/providers/Microsoft.ContainerInstance/containerGroups/funalert-aci",
+2021-03-26T12:07:01.492 [Information] "message": "Microsoft.ContainerInstance/containerGroups/restart/action",
+2021-03-26T12:07:01.493 [Information] "hierarchy": "my-sts/my-subscription"
+2021-03-26T12:07:01.493 [Information] },
+2021-03-26T12:07:01.493 [Information] "resourceId": "/subscriptions/my-subscription/resourceGroups/funalert-rg/providers/Microsoft.ContainerInstance/containerGroups/funalert-aci",
+2021-03-26T12:07:01.493 [Information] "resourceGroupName": "funalert-rg",
+2021-03-26T12:07:01.493 [Information] "resourceProviderName": "Microsoft.ContainerInstance",
+2021-03-26T12:07:01.493 [Information] "status": "Started",
+2021-03-26T12:07:01.493 [Information] "subStatus": "",
+2021-03-26T12:07:01.493 [Information] "subscriptionId": "my-subscription",
+2021-03-26T12:07:01.493 [Information] "submissionTimestamp": "2021-03-26T12:06:50.1473765+00:00",
+2021-03-26T12:07:01.493 [Information] "resourceType": "Microsoft.ContainerInstance/containerGroups"
+2021-03-26T12:07:01.493 [Information] }
+2021-03-26T12:07:01.493 [Information] },
+2021-03-26T12:07:01.493 [Information] "properties": {}
+2021-03-26T12:07:01.494 [Information] }
+2021-03-26T12:07:01.494 [Information] },
 ~~~~
 
 ## Thanks
