@@ -25,7 +25,10 @@ We will need to create the following three components inside Azure:
 
 ## Azure Function App Authorization & Authentication
 
-To restrict access to our Azure Funcation App "funalert-func" we will use the concept of an Identity Provider, in our case we will make use of Azure Active Directory [AAD].
+IMPORTANT: During the next steps you will need to register an App under your current Azure AD. Therefore your Azure account needs permissions to register AAD apps.
+In case you do not have the needed permission, request the tenant/global admin to assign the required permission. Alternately, the tenant/global admin can assign the Application Developer role to an account to allow the registration of AAD App. [Learn more](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal).
+
+To restrict access to our Azure Function App "funalert-func" we will use the concept of an Identity Provider, in our case we will make use of Azure Active Directory [AAD].
 Therefore we need to turn on Authorization and Authentication at our Azure Function App "funalert-func".
 
 - Go to the Azure Function App overview page.
@@ -50,7 +53,10 @@ Back on the initial "Authentication / Authorizaton" Screen confirm your settings
 
 ### "AAD App" & AAD
 
-Next we need to setup the "App Role" inside the new "AAD App". Therefore we need to find our "AAD App":
+Next we need to verify if all the "Azure AD App" setting of the last step have been applied.
+
+NOTE: In case you do not have the needed Azure AD Permission the Express Setup of the "Azure AD App" will only successed partly.
+To verify this we need to find the corresponding "Azure AD App" inside the AAD:
 
 - Go into the Azure Active Directy View and select "App registration".
 - Here you will find your "AAD App", in our case it has been named "funalert-func-app". Click on it to call the detail view of our "AAD App" funalert-func-app:
@@ -60,6 +66,16 @@ Next we need to setup the "App Role" inside the new "AAD App". Therefore we need
 Inside the Detail view of our "AAD App" we will also be able to see the "Object Id" of "funalert-func-app" which is unique inside the AAD Tenant:
 
 ![Overview](/images/afa.auth.06.png "Overview")
+
+Inside the Detail view of our "AAD App" we need to verify that an "Redirect URI" has been created under the "Authentication" Section:
+
+![Overview](/images/afa.auth.06.01.png "Overview")
+
+Inside the Detail view of our "AAD App" we need to verify that a "Client Secret" has been created under the "Certificates & Secret" Section:
+
+![Overview](/images/afa.auth.06.02.png "Overview")
+
+If any of both setting does not exist you did not have the needed permission to create the "AAD App" the right way. You will need to request the tenant/global admin to assign the required permission. Alternately, the tenant/global admin can assign the Application Developer role to an account to allow the registration of AAD App. [Learn more](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal).
 
 ### Support App Role based access
 
